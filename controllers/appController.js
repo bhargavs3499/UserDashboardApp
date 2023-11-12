@@ -319,6 +319,16 @@ export async function getActivity(req, res) {
   }
 }
 
+/** GET: http://localhost:8080/api/getActivity */
+export async function getAllUsers(req, res) {
+  try {
+    const users = await UserModel.find({});
+    return res.status(200).send(users);
+  } catch (error) {
+    return res.status(500).send({ error: error.message });
+  }
+}
+
 // POST :http://localhost:8080/api/conversations
 export async function newConversation(req, res) {
   const newConversation = new Conversation({
