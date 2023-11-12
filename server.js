@@ -4,6 +4,7 @@ import morgan from "morgan";
 import connect from "./database/conn.js";
 import router from "./router/route.js";
 import rateLimit from "express-rate-limit";
+import { PORT } from "./config.js";
 
 const app = express();
 // Define the rate limit options
@@ -22,7 +23,7 @@ app.use(cors());
 app.use(morgan("tiny"));
 app.disable("x-powered-by"); // less hackers know about our stack
 
-const port = 8080;
+const port = PORT || 8080;
 
 /** HTTP GET Request */
 app.get("/", (req, res) => {
