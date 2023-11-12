@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
 
-import ENV from "../config.js";
+import { EMAIL } from "../config.js";
 
 // https://ethereal.email/create
 let nodeConfig = {
@@ -40,8 +40,7 @@ export const registerMail = async (req, res) => {
     body: {
       name: username,
       intro:
-        text ||
-        `Welcome ${username}! We're very excited to have you on board.`,
+        text || `Welcome ${username}! We're very excited to have you on board.`,
       outro:
         "Need help, or have questions? Just reply to this email, we'd love to help.",
     },
@@ -50,7 +49,7 @@ export const registerMail = async (req, res) => {
   var emailBody = MailGenerator.generate(email);
 
   let message = {
-    from: ENV.EMAIL,
+    from: EMAIL,
     to: userEmail,
     subject: subject || "Signup Successful",
     html: emailBody,

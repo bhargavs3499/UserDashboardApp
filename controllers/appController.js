@@ -4,7 +4,7 @@ import Conversation from "../model/Conversation.js";
 import Message from "../model/Message.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import ENV from "../config.js";
+import { JWT_SECRET } from "../config.js";
 import otpGenerator from "otp-generator";
 
 /** middleware for verify user */
@@ -117,7 +117,7 @@ export async function login(req, res) {
                 userId: user._id,
                 username: user.username,
               },
-              ENV.JWT_SECRET,
+              JWT_SECRET,
               { expiresIn: "24h" }
             );
 

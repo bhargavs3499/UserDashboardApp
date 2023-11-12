@@ -9,7 +9,7 @@ const app = express();
 // Define the rate limit options
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100000, // Limit each IP to 100 requests per windowMs
+  max: 100, // Limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again later.",
 });
 
@@ -44,5 +44,5 @@ connect()
     }
   })
   .catch((error) => {
-    console.log("Invalid database connection...!");
+    console.log("Invalid database connection...!" + error);
   });
