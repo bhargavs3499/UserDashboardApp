@@ -322,7 +322,7 @@ export async function getActivity(req, res) {
 /** GET: http://localhost:8080/api/getActivity */
 export async function getAllUsers(req, res) {
   try {
-    const users = await UserModel.find({});
+    const users = await UserModel.find({ _id: { $ne: req.params.userId } });
     return res.status(200).send(users);
   } catch (error) {
     return res.status(500).send({ error: error.message });

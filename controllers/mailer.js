@@ -24,7 +24,7 @@ let MailGenerator = new Mailgen({
   },
 });
 
-/** POST: http://localhost:8080/api/registerMail 
+/** POST: http://localhost:8080/api/registerMail
  * @param: {
   "username" : "example123",
   "userEmail" : "admin123",
@@ -35,7 +35,7 @@ let MailGenerator = new Mailgen({
 export const registerMail = async (req, res) => {
   const { username, userEmail, text, subject } = req.body;
 
-  // body of the email
+  //   // body of the email
   var email = {
     body: {
       name: username,
@@ -55,7 +55,7 @@ export const registerMail = async (req, res) => {
     html: emailBody,
   };
 
-  // send mail
+  //   // send mail
   transporter
     .sendMail(message)
     .then(() => {
@@ -65,3 +65,65 @@ export const registerMail = async (req, res) => {
     })
     .catch((error) => res.status(500).send({ error }));
 };
+
+/** send mail from real gmail account */
+// export const sendMail = (req, res) => {
+//   const { userEmail } = req.body;
+
+//   let config = {
+//     service: "gmail",
+//     auth: {
+//       user: EMAIL,
+//       pass: PASSWORD,
+//     },
+//   };
+
+//   let transporter = nodemailer.createTransport(config);
+
+//   let MailGenerator = new Mailgen({
+//     theme: "default",
+//     product: {
+//       name: "Mailgen",
+//       link: "https://mailgen.js/",
+//     },
+//   });
+
+//   let response = {
+//     body: {
+//       name: "Daily Tuition",
+//       intro: "Your bill has arrived!",
+//       table: {
+//         data: [
+//           {
+//             item: "Nodemailer Stack Book",
+//             description: "A Backend application",
+//             price: "$10.99",
+//           },
+//         ],
+//       },
+//       outro: "Looking forward to do more business",
+//     },
+//   };
+
+//   let mail = MailGenerator.generate(response);
+
+//   let message = {
+//     from: EMAIL,
+//     to: userEmail,
+//     subject: "Place Order",
+//     html: mail,
+//   };
+
+//   transporter
+//     .sendMail(message)
+//     .then(() => {
+//       return res.status(201).json({
+//         msg: "you should receive an email",
+//       });
+//     })
+//     .catch((error) => {
+//       return res.status(500).json({ error });
+//     });
+
+//   // res.status(201).json("getBill Successfully...!");
+// };
