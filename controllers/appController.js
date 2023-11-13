@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config.js";
 import otpGenerator from "otp-generator";
+import mongoose from "mongoose";
 
 /** middleware for verify user */
 export async function verifyUser(req, res, next) {
@@ -85,11 +86,11 @@ export async function register(req, res) {
             });
         }
       })
-      .catch((error) => {
-        return res.status(500).send({ error });
+      .catch((error1) => {
+        return res.status(500).send({ error1 });
       });
-  } catch (error) {
-    return res.status(500).send(error);
+  } catch (error2) {
+    return res.status(500).send(error2);
   }
 }
 
@@ -162,6 +163,30 @@ export async function getUser(req, res) {
     return res.status(404).send({ error: "Cannot Find User Data" });
   }
 }
+
+// export async function getUserDetails(req, res) {
+//   const id = req.params.userId;
+//   console.log("USerID:" + id);
+
+//   try {
+//     if (!id) return res.status(501).send({ error: "Invalid Username" });
+
+//     UserModel.find({ _id: id }, function (err, user) {
+//       if (err) return res.status(500).send({ err });
+//       if (!user)
+//         return res.status(501).send({ error: "Couldn't Find the User" });
+
+//       /** remove password from user */
+//       // mongoose return unnecessary data with object so convert it into json
+//       const { password, ...rest } = Object.assign({}, user.toJSON());
+//       // console.log(rest);
+
+//       return res.status(201).send(rest);
+//     });
+//   } catch (error) {
+//     return res.status(404).send({ error: "Cannot Find User Data" });
+//   }
+// }
 
 /** PUT: http://localhost:8080/api/updateuser 
  * @param: {
@@ -390,7 +415,7 @@ export async function getMessage(req, res) {
 export async function getUserId(req, res) {
   const userId = req.query.userId;
   const username = req.query.username;
-  // console.log("userId:", userId);
+  console.log("userId:", userId);
   // console.log("username:", username);
   try {
     const user = userId

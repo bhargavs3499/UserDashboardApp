@@ -35,6 +35,7 @@ router.route("/createResetSession").get(controller.createResetSession); // reset
 router.route("/conversation/:userId").get(controller.getUserConversation);
 router.route("/users").get(controller.getUserId);
 router.route("/getAllUsers/:userId").get(controller.getAllUsers);
+// router.route("/user/:userId").get(controller.getUserDetails);
 router
   .route("/conversation/find/:firstUserId/:secondUserId")
   .get(controller.getUsersConversation);
