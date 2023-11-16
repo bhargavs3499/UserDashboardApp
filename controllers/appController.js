@@ -164,30 +164,6 @@ export async function getUser(req, res) {
   }
 }
 
-// export async function getUserDetails(req, res) {
-//   const id = req.params.userId;
-//   console.log("USerID:" + id);
-
-//   try {
-//     if (!id) return res.status(501).send({ error: "Invalid Username" });
-
-//     UserModel.find({ _id: id }, function (err, user) {
-//       if (err) return res.status(500).send({ err });
-//       if (!user)
-//         return res.status(501).send({ error: "Couldn't Find the User" });
-
-//       /** remove password from user */
-//       // mongoose return unnecessary data with object so convert it into json
-//       const { password, ...rest } = Object.assign({}, user.toJSON());
-//       // console.log(rest);
-
-//       return res.status(201).send(rest);
-//     });
-//   } catch (error) {
-//     return res.status(404).send({ error: "Cannot Find User Data" });
-//   }
-// }
-
 /** PUT: http://localhost:8080/api/updateuser 
  * @param: {
   "header" : "<token>"
@@ -344,10 +320,16 @@ export async function getActivity(req, res) {
   }
 }
 
-/** GET: http://localhost:8080/api/getActivity */
-export async function getAllUsers(req, res) {
+export async function getUsers(req, res) {
   try {
-    const users = await UserModel.find({ _id: { $ne: req.params.userId } });
+    if (!req.params.username) {
+      return res
+        .status(400)
+        .json({ error: "Username is missing or undefined." });
+    }
+    const users = await UserModel.find({
+      username: { $ne: req.params.username },
+    });
     return res.status(200).send(users);
   } catch (error) {
     return res.status(500).send({ error: error.message });
@@ -415,8 +397,6 @@ export async function getMessage(req, res) {
 export async function getUserId(req, res) {
   const userId = req.query.userId;
   const username = req.query.username;
-  console.log("userId:", userId);
-  // console.log("username:", username);
   try {
     const user = userId
       ? await UserModel.findById(userId)
