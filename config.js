@@ -9,3 +9,5 @@ export const ATLAS_URI = process.env.ATLAS_URI;
 export const PORT = process.env.PORT;
 export const E_MAIL = process.env.E_MAIL;
 export const PASS_WORD = process.env.PASS_WORD;
+export const sid = process.env.sid;
+export const auth_token = process.env.auth_token;
