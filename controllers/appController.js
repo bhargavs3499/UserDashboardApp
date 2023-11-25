@@ -4,12 +4,10 @@ import Conversation from "../model/Conversation.js";
 import Message from "../model/Message.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config.js";
+import { sid, JWT_SECRET, auth_token } from "../config.js";
 import otpGenerator from "otp-generator";
 import mongoose from "mongoose";
 import twilio from "twilio";
-let sid = "ACd243ea930658f29b29c1805a6f8591cf";
-let auth_token = "c7a05daaa3d236c00f3b029511caff93";
 
 const client = new twilio(sid, auth_token);
 
