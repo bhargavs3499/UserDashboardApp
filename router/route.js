@@ -25,9 +25,15 @@ router
   .route("/generateOTP")
   .get(controller.verifyUser, localVariables, controller.generateOTP); // generate random OTP
 router
+  .route("/generatePhoneOTP")
+  .get(controller.verifyUser, localVariables, controller.generatePhoneOTP); // generate random OTP
+router
   .route("/generate2FAOTP")
   .get(controller.verifyUser, localVariables, controller.generate2FAOTP);
-router.route("/verifyOTP").get(controller.verifyUser, controller.verifyOTP); // verify generated OTP
+router.route("/verifyOTP").get(controller.verifyOTP); // verify generated OTP
+router
+  .route("/verifyPhoneOTP")
+  .get(controller.verifyUser, controller.verifyPhoneOTP); // verify generated OTP
 router
   .route("/verify2FAOTP")
   .get(controller.verifyUser, controller.verify2FAOTP); // verify generated OTP

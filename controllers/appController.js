@@ -7,6 +7,11 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config.js";
 import otpGenerator from "otp-generator";
 import mongoose from "mongoose";
+import twilio from "twilio";
+let sid = "ACd243ea930658f29b29c1805a6f8591cf";
+let auth_token = "c7a05daaa3d236c00f3b029511caff93";
+
+const client = new twilio(sid, auth_token);
 
 /** middleware for verify user */
 export async function verifyUser(req, res, next) {
@@ -206,6 +211,32 @@ export async function generateOTP(req, res) {
   res.status(201).send({ code: req.app.locals.OTP });
 }
 
+/** GET: http://localhost:8080/api/generatePhoneOTP */
+export async function generatePhoneOTP(req, res) {
+  const username = req.query.username;
+  const member = await UserModel.findOne({ username: username });
+  // const phno = member.mobile.toString();
+
+  req.app.locals.OTP = await otpGenerator.generate(6, {
+    lowerCaseAlphabets: false,
+    upperCaseAlphabets: false,
+    specialChars: false,
+  });
+  client.messages
+    .create({
+      from: "+18142401641",
+      to: "+" + member.mobile,
+      body: `Your OTP for login is ${req.app.locals.OTP}`,
+    })
+    .then(function (res) {
+      console.log("message has sent!");
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  res.status(201).send({ code: req.app.locals.OTP });
+}
+
 export async function generate2FAOTP(req, res) {
   req.app.locals.OTP = await otpGenerator.generate(6, {
     lowerCaseAlphabets: false,
@@ -217,6 +248,17 @@ export async function generate2FAOTP(req, res) {
 
 /** GET: http://localhost:8080/api/verifyOTP */
 export async function verifyOTP(req, res) {
+  const { code } = req.query;
+  if (parseInt(req.app.locals.OTP) === parseInt(code)) {
+    req.app.locals.OTP = null; // reset the OTP value
+    req.app.locals.resetSession = true; // start session for reset password
+    return res.status(201).send({ msg: "Verify Successsfully!" });
+  }
+  return res.status(400).send({ error: "Invalid OTP" });
+}
+
+/** GET: http://localhost:8080/api/verifyPhoneOTP */
+export async function verifyPhoneOTP(req, res) {
   const { code } = req.query;
   if (parseInt(req.app.locals.OTP) === parseInt(code)) {
     req.app.locals.OTP = null; // reset the OTP value
